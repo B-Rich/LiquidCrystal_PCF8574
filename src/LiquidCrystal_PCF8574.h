@@ -3,10 +3,11 @@
 /// \brief LiquidCrystal library with PCF8574 I2C adapter.
 ///
 /// \author Matthias Hertel, http://www.mathertel.de
+/// \author Gutierrez PS
 /// \copyright Copyright (c) 2014 by Matthias Hertel.\n
 /// This work is licensed under a BSD style license.\n
 /// See http://www.mathertel.de/License.aspx
-/// 
+///
 /// \details
 /// This is a library for driving LiquidCrystal displays (LCD) by using the I2C bus and an PCF8574 I2C adapter.
 /// This library is derived from the original Arduino LiquidCrystal library and uses the original Wire library for communication.
@@ -15,14 +16,15 @@
 /// --------
 /// * 19.10.2013 created.
 /// * 24.05.2015 Arduino Library Manager compatible.
-
-
+/// * 24.02.2017 Using Steve Marple's SoftWire
 
 #ifndef LiquidCrystal_PCF8574_h
 #define LiquidCrystal_PCF8574_h
 
 #include <inttypes.h>
 #include "Print.h"
+#include <SoftWire.h>       // Steve Marple's
+#include <AsyncDelay.h>     // Steve Marple's
 
 // commands
 #define LCD_CLEARDISPLAY 0x01
@@ -64,7 +66,8 @@
 
 class LiquidCrystal_PCF8574 : public Print {
 public:
-  LiquidCrystal_PCF8574(uint8_t adr);
+  LiquidCrystal_PCF8574(uint8_t adr) : LiquidCrystal_PCF8574(adr, NULL) {};
+  LiquidCrystal_PCF8574(uint8_t adr, SoftWire *sw);
 
   void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
 
@@ -87,7 +90,7 @@ public:
   void setBacklight(uint8_t brightness);
 
   void createChar(uint8_t, uint8_t[]);
-  void setCursor(uint8_t col, uint8_t row); 
+  void setCursor(uint8_t col, uint8_t row);
 
   virtual size_t write(uint8_t);
   using Print::write;
@@ -101,13 +104,15 @@ private:
 
 // NEW:
   uint8_t _Addr;        ///< Wire Address of the LCD
-  uint8_t _backlight;   ///< the backlight intensity 
+  uint8_t _backlight;   ///< the backlight intensity
 
   uint8_t _displayfunction; ///< lines and dots mode
   uint8_t _displaycontrol;  ///< cursor, display, blink flags
   uint8_t _displaymode;     ///< left2right, autoscroll
 
   uint8_t _numlines;        ///< The number of rows the display supports.
+
+  SoftWire *_softwire;
 };
 
 #endif
