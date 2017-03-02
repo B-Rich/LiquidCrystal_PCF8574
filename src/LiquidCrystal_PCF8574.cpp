@@ -65,7 +65,7 @@
 // NEW: setBacklight
 
 
-LiquidCrystal_PCF8574::LiquidCrystal_PCF8574(uint8_t addr, SoftWire *sw)
+LiquidCrystal_PCF8574::LiquidCrystal_PCF8574(uint8_t addr, SoftwareWire *sw)
 {
   _Addr = addr;
   _backlight = 0;
@@ -276,13 +276,13 @@ void LiquidCrystal_PCF8574::_write2Wire(uint8_t halfByte, uint8_t mode, uint8_t 
   if (_backlight > 0) i2cData |= PCF_BACKLIGHT;
 
   if(_softwire != NULL) {
-      _softwire->startWrite(_Addr);
+      _softwire->beginTransmission(_Addr);
       _softwire->write(i2cData);
-      _softwire->stop();
+      _softwire->endTransmission();
   } else {
       Wire.beginTransmission(_Addr);
       Wire.write(i2cData);
-      Wire.endTransmission(); 
+      Wire.endTransmission();
   }
 } // write2Wire
 

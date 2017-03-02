@@ -23,8 +23,7 @@
 
 #include <inttypes.h>
 #include "Print.h"
-#include <SoftWire.h>       // Steve Marple's
-#include <AsyncDelay.h>     // Steve Marple's
+#include <SoftwareWire.h>       // Testato's
 
 // commands
 #define LCD_CLEARDISPLAY 0x01
@@ -67,7 +66,7 @@
 class LiquidCrystal_PCF8574 : public Print {
 public:
   LiquidCrystal_PCF8574(uint8_t adr) : LiquidCrystal_PCF8574(adr, NULL) {};
-  LiquidCrystal_PCF8574(uint8_t adr, SoftWire *sw);
+  LiquidCrystal_PCF8574(uint8_t adr, SoftwareWire *sw);
 
   void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
 
@@ -112,7 +111,7 @@ private:
 
   uint8_t _numlines;        ///< The number of rows the display supports.
 
-  SoftWire *_softwire;
+  SoftwareWire *_softwire;
 };
 
 #endif
